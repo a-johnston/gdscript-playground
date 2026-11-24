@@ -1,0 +1,57 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="description" content="Write, run, and share a GDScript snippet. Godot runs entirely in your browser.">
+  <meta http-equiv="Content-Security-Policy" content="default-src 'none'; script-src 'self'; style-src 'self' 'unsafe-inline'; img-src 'self'; connect-src 'self'; frame-src 'self'; base-uri 'none'; form-action 'none'">
+  <title>GDScript Playground</title>
+  <link rel="icon" href="./assets/favicon.svg" type="image/svg+xml" sizes="any">
+  <link rel="stylesheet" href="./style.css">
+  <script type="module" src="./app.js"></script>
+</head>
+<body>
+  <main>
+    <header class="masthead">
+      <h3>GDScript Playground</h3>
+    </header>
+    <p id="notice" class="notice" role="status" hidden></p>
+
+    <div class="workspace">
+      <section class="panel" aria-labelledby="source-label">
+        <div class="panel-bar">
+          <h2 id="source-label">Snippet</h2>
+          <div class="actions">
+            <button id="copy-link" type="button" class="secondary" aria-live="polite">Copy link</button>
+            <button id="run" type="button" class="primary">Run</button>
+          </div>
+        </div>
+        <div id="editor"></div>
+      </section>
+      <section class="panel" aria-labelledby="output-label">
+        <div class="panel-bar">
+          <h2 id="output-label">Output</h2>
+          <button id="copy-output" type="button" class="secondary" aria-live="polite" disabled>Copy output</button>
+        </div>
+        <div id="diagnostics" class="diagnostics" hidden></div>
+        <pre id="output" tabindex="0" aria-label="Script output"><span class="placeholder">Run a snippet to see its output here.</span></pre>
+      </section>
+    </div>
+
+    <footer>
+      <div class="footer-top">
+        <p><kbd id="shortcut">Ctrl</kbd> + <kbd>Enter</kbd> to run. Scripts run entirely in browser and are shared via the URL with no data stored either locally or on a server.</p>
+        <div class="footer-meta">
+          <span id="godot-version">Godot Engine v4.8 beta (25d0522345)</span>
+          <a href="https://github.com/a-johnston/gdscript-playground" aria-label="Source on GitHub">
+            <svg width="16" height="16" viewBox="0 0 16 16" aria-hidden="true">
+              <path fill="currentColor" d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82.64-.18 1.32-.27 2-.27.68 0 1.36.09 2 .27 1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8.013 8.013 0 0 0 16 8c0-4.42-3.58-8-8-8z"/>
+            </svg>
+          </a>
+        </div>
+      </div>
+    </footer>
+    <noscript>This playground needs JavaScript and WebAssembly to run.</noscript>
+  </main>
+</body>
+</html>
