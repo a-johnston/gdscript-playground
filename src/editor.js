@@ -2,7 +2,7 @@ import { defaultKeymap, history, historyKeymap, indentWithTab } from '@codemirro
 import { HighlightStyle, indentOnInput, indentUnit, syntaxHighlighting } from '@codemirror/language';
 import { lintGutter, setDiagnostics } from '@codemirror/lint';
 import { Compartment, EditorSelection, EditorState } from '@codemirror/state';
-import { drawSelection, EditorView, highlightActiveLine, highlightActiveLineGutter, keymap, lineNumbers } from '@codemirror/view';
+import { drawSelection, EditorView, highlightActiveLineGutter, keymap, lineNumbers } from '@codemirror/view';
 import { tags } from '@lezer/highlight';
 import { gdscript } from './gdscript.js';
 
@@ -36,8 +36,13 @@ export function mountEditor({ parent, source, onRun, onEdit }) {
       EditorView.contentAttributes.of({ 'aria-label': 'GDScript source' }),
       EditorState.tabSize.of(indentWidth), indentUnit.of(' '.repeat(indentWidth)), gdscript,
       EditorView.clipboardInputFilter.of(normalizePastedIndentation),
-      lineNumbers(), highlightActiveLineGutter(), highlightActiveLine(), drawSelection(),
-      history(), indentOnInput(), syntaxHighlighting(highlightStyle), lintGutter(),
+      lineNumbers(),
+      drawSelection(),
+      history(),
+      indentOnInput(),
+      syntaxHighlighting(highlightStyle),
+      lintGutter(),
+      highlightActiveLineGutter(),
       theme.of(EditorView.darkTheme.of(prefersDark.matches)),
       keymap.of([{ key: 'Mod-Enter', run: () => { onRun(); return true; } }, ...defaultKeymap, ...historyKeymap, indentWithTab]),
       EditorView.updateListener.of(update => { if (update.docChanged) onEdit(); }),
