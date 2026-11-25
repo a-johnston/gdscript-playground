@@ -12,8 +12,6 @@
   --gutter: light-dark(#f8faff, #1c2636);
   --active-line: light-dark(#eef6ff, #24354c);
   --active-line-tint: light-dark(#268cff14, #70b6fc26);
-  --selection: light-dark(#bedafa, #354b70);
-  --selection-inactive: light-dark(#d4dce8, #343f53);
   --error: light-dark(#ab2a25, #ffaaa4);
   --error-surface: light-dark(#fff6f4, #38252d);
   --syntax-keyword: light-dark(#770088, #d7a8ff);
@@ -72,6 +70,8 @@ button[data-copy-label]::after { content: attr(data-copy-label); visibility: hid
 #editor, #output { flex: 1; min-height: 0; }
 #editor .cm-editor { height: 100%; font-size: .88rem; }
 #editor .cm-editor.cm-focused { outline: none; }
+/* Hide the native caret until CodeMirror has handled focus and restored the selection. */
+#editor .cm-editor:not(.cm-focused) .cm-content { caret-color: transparent; }
 #editor .cm-scroller { font: .88rem/1.65 var(--mono); }
 /* CodeMirror uses the content padding to position gutter entries. */
 #editor .cm-content { padding-top: .7rem; }
@@ -80,8 +80,7 @@ button[data-copy-label]::after { content: attr(data-copy-label); visibility: hid
 /* CodeMirror paints selections underneath the line background. */
 #editor .cm-activeLine { background-color: var(--active-line-tint); }
 #editor .cm-activeLineGutter { background-color: var(--active-line); }
-#editor .cm-selectionBackground { background-color: var(--selection-inactive); }
-#editor .cm-focused .cm-selectionBackground { background-color: var(--selection); }
+.cm-editor:not(.cm-focused) .cm-activeLineGutter { background-color: transparent !important; }
 #output { padding: .85rem; margin: 0; overflow: auto; white-space: pre-wrap; overflow-wrap: anywhere; font: .84rem/1.6 var(--mono); }
 #output:focus-visible { outline-offset: -2px; }
 #output .stderr { color: var(--error); }

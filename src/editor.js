@@ -2,7 +2,7 @@ import { defaultKeymap, history, historyKeymap, indentWithTab } from '@codemirro
 import { HighlightStyle, indentOnInput, indentUnit, syntaxHighlighting } from '@codemirror/language';
 import { lintGutter, setDiagnostics } from '@codemirror/lint';
 import { Compartment, EditorSelection, EditorState } from '@codemirror/state';
-import { drawSelection, EditorView, highlightActiveLineGutter, keymap, lineNumbers } from '@codemirror/view';
+import { EditorView, highlightActiveLineGutter, keymap, lineNumbers } from '@codemirror/view';
 import { tags } from '@lezer/highlight';
 import { gdscript } from './gdscript.js';
 
@@ -37,7 +37,6 @@ export function mountEditor({ parent, source, onRun, onEdit }) {
       EditorState.tabSize.of(indentWidth), indentUnit.of(' '.repeat(indentWidth)), gdscript,
       EditorView.clipboardInputFilter.of(normalizePastedIndentation),
       lineNumbers(),
-      drawSelection(),
       history(),
       indentOnInput(),
       syntaxHighlighting(highlightStyle),
