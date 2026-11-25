@@ -1,24 +1,20 @@
 #!/usr/bin/env python3
 import html
 import re
-import subprocess
 import sys
 from pathlib import Path
 
 
 def get_godot_version_label(source: Path) -> str:
     header = (source / "core/version_generated.gen.h").read_text(encoding="utf-8")
-    hash_source = (source / "core/version_hash.gen.cpp").read_text(encoding="utf-8")
     parts = dict(re.findall(r"^#define GODOT_VERSION_(MAJOR|MINOR|PATCH) (\d+)$", header, re.MULTILINE))
     status = re.search(r'^#define GODOT_VERSION_STATUS "([^"\n]+)"$', header, re.MULTILINE)
-    commit = re.search(r'\bGODOT_VERSION_HASH\s*=\s*"([0-9a-f]{9,})"', hash_source)
-    if len(parts) != 3 or not status or not commit:
-        sys.exit("Could not read version, status, and Git revision from the Godot build")
+    if len(parts) != 3 or not status:
+        sys.exit("Could not read version and status from the Godot build")
     version = f"{parts['MAJOR']}.{parts['MINOR']}"
     if parts["PATCH"] != "0":
         version += f".{parts['PATCH']}"
-    short = subprocess.check_output(["git", "-C", str(source), "rev-parse", "--short", commit[1]], text=True)
-    return html.escape(f"Godot Engine v{version} {status[1]} ({short.strip()})")
+    return html.escape(f"Godot v{version} {status[1]}")
 
 
 def main() -> None:
