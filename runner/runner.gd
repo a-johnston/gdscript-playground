@@ -5,17 +5,18 @@ func _ready() -> void:
 	script.resource_path = "res://snippet.gd"
 	script.source_code = FileAccess.get_file_as_string("/tmp/snippet.txt")
 	if script.reload() != OK:
+		push_error("Failed to load snippet!")
 		get_tree().quit(2)
 		return
 
 	if not ClassDB.is_parent_class(script.get_instance_base_type(), &"Node"):
-		push_error("The snippet must extend Node.")
+		push_error("The snippet must extend Node!")
 		get_tree().quit(2)
 		return
 
 	var snippet = script.new()
 	if not is_instance_valid(snippet):
-		push_error("Failed to instance script.")
+		push_error("Failed to instance script!")
 		get_tree().quit(2)
 		return
 

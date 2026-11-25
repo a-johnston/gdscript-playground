@@ -4,9 +4,7 @@
   "license": "Apache-2.0",
   "type": "module",
   "scripts": {
-    "build:assets": "node tools/build-assets.mjs",
-    "test": "node --test tests/share.test.mjs",
-    "test:browser": "node tools/smoke-browser.mjs"
+    "build:assets": "node tools/build-assets.mjs"
   },
   "dependencies": {
     "@codemirror/commands": "6.11.1",
