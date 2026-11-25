@@ -33,7 +33,7 @@ button {
   font: inherit;
   border: 1px solid transparent;
   border-radius: .55rem;
-  padding: .45rem .85rem;
+  padding: .45rem .7rem;
   cursor: pointer;
   font-weight: 600;
   line-height: 1.35;
@@ -44,7 +44,7 @@ button:not(:disabled):focus-visible, a:focus-visible, pre:focus-visible {
   outline-offset: 2px;
 }
 button:disabled { opacity: .55; cursor: default; }
-.primary { color: var(--on-accent); background: var(--accent); min-width: 4.5rem; }
+.primary { color: var(--on-accent); background: var(--accent); min-width: 2.5rem; }
 .primary:not(:disabled):hover { background: var(--accent-hover); }
 .secondary { color: var(--text); background: var(--surface); border-color: var(--line); }
 .secondary:not(:disabled):hover { background: var(--hover); }
@@ -64,8 +64,8 @@ button[data-copy-label] { display: inline-grid; place-items: center; }
 button[data-copy-label] > span, button[data-copy-label]::after { grid-area: 1 / 1; }
 /* Keep the original label's space reserved while showing clipboard feedback. */
 button[data-copy-label]::after { content: attr(data-copy-label); visibility: hidden; }
-#copy-code { min-inline-size: 7rem; }
-#copy-link { min-inline-size: 6rem; }
+#copy-code { min-inline-size: 5rem; }
+#copy-link { min-inline-size: 5rem; }
 #copy-output { min-inline-size: 7.5rem; }
 #editor, #output { flex: 1; min-height: 0; }
 #editor .cm-editor { height: 100%; font-size: .88rem; }
@@ -88,11 +88,11 @@ button[data-copy-label]::after { content: attr(data-copy-label); visibility: hid
 #editor .cm-activeLine { background-color: var(--active-line-tint); }
 #editor .cm-activeLineGutter { background-color: var(--active-line); }
 .cm-editor:not(.cm-focused) .cm-activeLineGutter { background-color: transparent !important; }
-#output { padding: .85rem; margin: 0; overflow: auto; white-space: pre-wrap; overflow-wrap: anywhere; font: .84rem/1.6 var(--mono); }
+#output { padding: .7rem; margin: 0; overflow: auto; white-space: pre-wrap; overflow-wrap: anywhere; font: .84rem/1.6 var(--mono); }
 #output:focus-visible { outline-offset: -2px; }
 #output .stderr { color: var(--error); }
 #output .system, .placeholder { color: var(--muted); }
-.diagnostics { max-height: 7rem; overflow: auto; border-bottom: 1px solid var(--line); padding: .45rem .85rem; background: var(--error-surface); }
+.diagnostics { max-height: 7rem; overflow: auto; border-bottom: 1px solid var(--line); padding: .45rem .7rem; background: var(--error-surface); }
 .diagnostics button { display: block; max-width: 100%; padding: .2rem 0; border: 0; background: none; color: var(--error); white-space: normal; text-align: left; font: .8rem/1.4 var(--mono); text-decoration: underline; }
 
 .notice { margin-bottom: 1rem; border: 1px solid var(--line); border-radius: .65rem; padding: .7rem .9rem; background: var(--surface); }
