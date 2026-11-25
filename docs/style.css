@@ -11,7 +11,6 @@
   --hover: light-dark(#edf2fa, #243247);
   --gutter: light-dark(#f8faff, #1c2636);
   --active-line: light-dark(#eef6ff, #24354c);
-  --active-line-tint: light-dark(#268cff14, #70b6fc26);
   --error: light-dark(#ab2a25, #ffaaa4);
   --error-surface: light-dark(#fff6f4, #38252d);
   --syntax-keyword: light-dark(#770088, #d7a8ff);
@@ -21,96 +20,85 @@
   --syntax-type: light-dark(#815200, #f1ce8f);
   --syntax-function: light-dark(#145e57, #91ded0);
   --mono: ui-monospace, Menlo, Consolas, monospace;
+  --inset: .625rem;
+  --border: 1px solid var(--line);
   font: 16px/1.5 system-ui, sans-serif;
 }
 
 *, *::before, *::after { box-sizing: border-box; }
-[hidden] { display: none !important; }
 body { margin: 0; background: var(--paper); color: var(--text); }
-main { max-width: 88rem; margin: 0 auto; padding: clamp(1rem, 4vw, 3.5rem); }
-a { color: var(--accent); }
+h1, h2, p, pre { margin: 0; }
+h1 { font-size: 1.125rem; }
+kbd { font-family: var(--mono); }
+:is(button, a, pre):focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
+
+main, .workspace { display: grid; gap: 1rem; }
+main { grid-template-columns: minmax(0, 1fr); max-width: 88rem; margin: auto; padding: clamp(1rem, 4vw, 3.5rem); }
+.workspace { grid-template-columns: minmax(0, 3fr) minmax(0, 2fr); }
+/* Match the text inset of panels, including their border. */
+main > header, footer { padding-inline: calc(var(--inset) + 1px); }
+
+.panel, .notice { background: var(--surface); border: var(--border); border-radius: .75rem; }
+.panel { display: flex; flex-direction: column; height: clamp(19rem, 62vh, 42rem); overflow: hidden; }
+.panel-bar, .actions, footer { display: flex; align-items: center; gap: var(--inset); }
+.panel-bar, .actions { flex-wrap: wrap; }
+.panel-bar { justify-content: space-between; padding: var(--inset); border-bottom: var(--border); }
+.panel-bar h2, #editor .cm-scroller, #output { font: .875rem/1.6 var(--mono); }
+.panel-bar h2 { font-weight: 600; }
+
 button {
-  font: inherit;
-  border: 1px solid transparent;
+  font: 600 1rem/1.35 system-ui, sans-serif;
+  color: var(--text);
+  background: var(--surface);
+  border: var(--border);
   border-radius: .55rem;
-  padding: .45rem .7rem;
+  padding: .45rem var(--inset);
   cursor: pointer;
-  font-weight: 600;
-  line-height: 1.35;
   white-space: nowrap;
 }
-button:not(:disabled):focus-visible, a:focus-visible, pre:focus-visible {
-  outline: 2px solid var(--accent);
-  outline-offset: 2px;
-}
 button:disabled { opacity: .55; cursor: default; }
-.primary { color: var(--on-accent); background: var(--accent); min-width: 2.5rem; }
-.primary:not(:disabled):hover { background: var(--accent-hover); }
-.secondary { color: var(--text); background: var(--surface); border-color: var(--line); }
-.secondary:not(:disabled):hover { background: var(--hover); }
+.primary { color: var(--on-accent); background: var(--accent); border-color: transparent; --button-hover: var(--accent-hover); }
+.panel-bar button:enabled:hover { background: var(--button-hover, var(--hover)); }
+/* Reserve space for the original label while showing clipboard feedback. */
+[data-copy-label] { display: inline-grid; place-items: center; }
+[data-copy-label] > span, [data-copy-label]::after { grid-area: 1 / 1; }
+[data-copy-label]::after { content: attr(data-copy-label); visibility: hidden; }
 
-.name, .footer-top { margin-inline: .6rem; }
-.name { margin-bottom: 1.5rem; }
-h1 { margin: .15rem 0; letter-spacing: -.04em; font-size: clamp(1.9rem, 4vw, 3rem); line-height: 1.2; }
-p { margin: .4rem 0 0; }
-.name p, footer { color: var(--muted); }
-
-.workspace { display: grid; grid-template-columns: minmax(0, 3fr) minmax(0, 2fr); gap: 1rem; }
-.panel { display: flex; flex-direction: column; min-height: 0; height: min(62vh, 42rem); min-height: 19rem; background: var(--surface); border: 1px solid var(--line); border-radius: .85rem; overflow: hidden; }
-.panel-bar { display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: .65rem; min-height: 3.55rem; padding: .65rem; border-bottom: 1px solid var(--line); }
-.panel-bar h2 { font: 600 .88rem/1.5 var(--mono); margin: 0; }
-.actions { display: flex; flex-wrap: wrap; gap: .65rem; }
-button[data-copy-label] { display: inline-grid; place-items: center; }
-button[data-copy-label] > span, button[data-copy-label]::after { grid-area: 1 / 1; }
-/* Keep the original label's space reserved while showing clipboard feedback. */
-button[data-copy-label]::after { content: attr(data-copy-label); visibility: hidden; }
-#copy-code { min-inline-size: 5rem; }
-#copy-link { min-inline-size: 5rem; }
-#copy-output { min-inline-size: 7.5rem; }
 #editor, #output { flex: 1; min-height: 0; }
-#editor .cm-editor { height: 100%; font-size: .88rem; }
-#editor .cm-editor.cm-focused { outline: none; }
-/* Hide the native caret until CodeMirror has handled focus and restored the selection. */
+#editor .cm-editor { height: 100%; }
+#editor .cm-focused { outline: none; }
+/* Hide the native caret until CodeMirror restores focus and selection. */
 #editor .cm-editor:not(.cm-focused) .cm-content { caret-color: transparent; }
-#editor .cm-scroller { font: .88rem/1.65 var(--mono); }
-/* CodeMirror uses the content padding to position gutter entries. */
-#editor .cm-content { padding-top: .7rem; }
-#editor .cm-line { padding-left: .6rem; }
+/* CodeMirror uses content padding to position gutter entries. */
+#editor .cm-content { padding-block: var(--inset); }
+#editor .cm-line { padding-inline-start: var(--inset); }
 #editor .cm-gutters { background: var(--gutter); border-color: var(--line); color: var(--muted); }
 #editor .cm-lineNumbers .cm-gutterElement {
-  --line-number-padding: 10px;
-  padding-inline: var(--line-number-padding);
-  min-inline-size: calc(2ch + 2 * var(--line-number-padding));
-  /* Round up so fractional font metrics don't shift the gutter at 10 lines. */
-  min-inline-size: round(up, calc(2ch + 2 * var(--line-number-padding)), 1px);
+  padding-inline: var(--inset);
+  text-align: start;
+  /* Reserve two digits and round up to avoid a gutter shift at line 10. */
+  min-inline-size: calc(2ch + 2 * var(--inset));
+  min-inline-size: round(up, calc(2ch + 2 * var(--inset)), 1px);
 }
-/* CodeMirror paints selections underneath the line background. */
-#editor .cm-activeLine { background-color: var(--active-line-tint); }
-#editor .cm-activeLineGutter { background-color: var(--active-line); }
-.cm-editor:not(.cm-focused) .cm-activeLineGutter { background-color: transparent !important; }
-#output { padding: .7rem; margin: 0; overflow: auto; white-space: pre-wrap; overflow-wrap: anywhere; font: .84rem/1.6 var(--mono); }
-#output:focus-visible { outline-offset: -2px; }
-#output .stderr { color: var(--error); }
-#output .system, .placeholder { color: var(--muted); }
-.diagnostics { max-height: 7rem; overflow: auto; border-bottom: 1px solid var(--line); padding: .45rem .7rem; background: var(--error-surface); }
-.diagnostics button { display: block; max-width: 100%; padding: .2rem 0; border: 0; background: none; color: var(--error); white-space: normal; text-align: left; font: .8rem/1.4 var(--mono); text-decoration: underline; }
+#editor .cm-activeLineGutter { background: transparent; }
+#editor .cm-focused .cm-activeLineGutter { background: var(--active-line); }
 
-.notice { margin-bottom: 1rem; border: 1px solid var(--line); border-radius: .65rem; padding: .7rem .9rem; background: var(--surface); }
+#output { padding: var(--inset); overflow: auto; white-space: pre-wrap; overflow-wrap: anywhere; }
+#output:focus-visible { outline-offset: -2px; }
+#output .stderr, .diagnostics button { color: var(--error); }
+#output .system, .placeholder, footer { color: var(--muted); }
+.diagnostics { max-height: 7rem; overflow: auto; border-bottom: var(--border); padding: .45rem var(--inset); background: var(--error-surface); }
+.diagnostics button { display: block; max-width: 100%; padding: .2rem 0; border: 0; background: none; white-space: normal; text-align: start; font: .8rem/1.4 var(--mono); text-decoration: underline; }
+
 .notice, footer { font-size: .85rem; }
-footer { margin-top: .85rem; }
-.footer-top { display: flex; align-items: center; gap: .4rem; white-space: nowrap; }
-.footer-top p { margin: 0; }
-.footer-meta { margin-inline-start: auto; display: flex; align-items: center; gap: .4rem; min-inline-size: 0; }
-#godot-version { overflow: hidden; text-overflow: ellipsis; }
-.footer-meta a { flex: none; color: var(--text); }
-.footer-meta svg { display: block; }
-code, kbd { font-family: var(--mono); }
+.notice { padding: var(--inset); }
+footer { white-space: nowrap; }
+#godot-version { margin-inline-start: auto; overflow: hidden; text-overflow: ellipsis; }
+footer a { display: flex; flex: none; color: var(--text); }
 .runner-frame { position: fixed; width: 1px; height: 1px; bottom: 0; right: 0; border: 0; opacity: 0; pointer-events: none; }
 
 @media (max-width: 48rem) {
-  .name { margin-bottom: .75rem; }
-  .name h3 { margin-block: 0; }
   .workspace { grid-template-columns: minmax(0, 1fr); }
   .panel { height: 26rem; }
-  .panel:last-child { height: 18rem; min-height: 14rem; }
+  .panel:last-child { height: 14rem; }
 }
