@@ -171,7 +171,7 @@ function wireCopyButton(button, getText, onClipboardError) {
     try {
       await navigator.clipboard.writeText(text);
     } catch {
-      setNotice(onClipboardError);
+      if (onClipboardError) setNotice(onClipboardError);
       return;
     }
     button.textContent = 'Copied';
@@ -188,6 +188,7 @@ window.addEventListener('keydown', event => {
 });
 window.addEventListener('hashchange', loadSharedSnippet);
 if (location.hash) loadSharedSnippet();
+wireCopyButton($('copy-code'), () => editor.source);
 wireCopyButton($('copy-link'), () => {
   const url = new URL(location.href);
   url.hash = encodeSnippet(editor.source);

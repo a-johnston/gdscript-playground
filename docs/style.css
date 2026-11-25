@@ -62,6 +62,7 @@ p { margin: .4rem 0 0; }
 .panel-bar { display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: .65rem; min-height: 3.55rem; padding: .65rem; border-bottom: 1px solid var(--line); }
 .panel-bar h2 { font: 600 .88rem/1.5 var(--mono); margin: 0; }
 .actions { display: flex; flex-wrap: wrap; gap: .65rem; }
+#copy-code { min-inline-size: 7rem; }
 #copy-link { min-inline-size: 6rem; }
 #copy-output { min-inline-size: 7.5rem; }
 #editor, #output { flex: 1; min-height: 0; }
