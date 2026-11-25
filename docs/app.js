@@ -156,10 +156,14 @@ function loadSharedSnippet() {
 
 function wireCopyButton(button, getText, onClipboardError) {
   const label = button.textContent;
+  const caption = document.createElement('span');
+  caption.textContent = label;
+  button.dataset.copyLabel = label;
+  button.replaceChildren(caption);
   let feedback;
   button.addEventListener('click', async () => {
     clearTimeout(feedback);
-    button.textContent = label;
+    caption.textContent = label;
     setNotice();
     let text;
     try {
@@ -174,8 +178,8 @@ function wireCopyButton(button, getText, onClipboardError) {
       if (onClipboardError) setNotice(onClipboardError);
       return;
     }
-    button.textContent = 'Copied';
-    feedback = setTimeout(() => { button.textContent = label; }, 1_500);
+    caption.textContent = 'Copied';
+    feedback = setTimeout(() => { caption.textContent = label; }, 1_500);
   });
 }
 

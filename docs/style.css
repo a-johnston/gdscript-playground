@@ -62,6 +62,10 @@ p { margin: .4rem 0 0; }
 .panel-bar { display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: .65rem; min-height: 3.55rem; padding: .65rem; border-bottom: 1px solid var(--line); }
 .panel-bar h2 { font: 600 .88rem/1.5 var(--mono); margin: 0; }
 .actions { display: flex; flex-wrap: wrap; gap: .65rem; }
+button[data-copy-label] { display: inline-grid; place-items: center; }
+button[data-copy-label] > span, button[data-copy-label]::after { grid-area: 1 / 1; }
+/* Keep the original label's space reserved while showing clipboard feedback. */
+button[data-copy-label]::after { content: attr(data-copy-label); visibility: hidden; }
 #copy-code { min-inline-size: 7rem; }
 #copy-link { min-inline-size: 6rem; }
 #copy-output { min-inline-size: 7.5rem; }
