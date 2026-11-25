@@ -1,6 +1,5 @@
 import { defaultKeymap, history, historyKeymap, indentWithTab } from '@codemirror/commands';
 import { HighlightStyle, indentOnInput, indentUnit, syntaxHighlighting } from '@codemirror/language';
-import { lintGutter, setDiagnostics } from '@codemirror/lint';
 import { Compartment, EditorSelection, EditorState } from '@codemirror/state';
 import { EditorView, highlightActiveLineGutter, keymap, lineNumbers } from '@codemirror/view';
 import { tags } from '@lezer/highlight';
@@ -26,7 +25,7 @@ const highlightStyle = HighlightStyle.define([
   { tag: tags.function(tags.variableName), color: 'var(--syntax-function)' },
 ]);
 
-export function mountEditor({ parent, source, onRun, onEdit }) {
+export function mountEditor({ parent, source, onRun }) {
   const theme = new Compartment();
   const prefersDark = matchMedia('(prefers-color-scheme: dark)');
   const view = new EditorView({
@@ -40,11 +39,9 @@ export function mountEditor({ parent, source, onRun, onEdit }) {
       history(),
       indentOnInput(),
       syntaxHighlighting(highlightStyle),
-      lintGutter(),
       highlightActiveLineGutter(),
       theme.of(EditorView.darkTheme.of(prefersDark.matches)),
       keymap.of([{ key: 'Mod-Enter', run: () => { onRun(); return true; } }, ...defaultKeymap, ...historyKeymap, indentWithTab]),
-      EditorView.updateListener.of(update => { if (update.docChanged) onEdit(); }),
     ],
   });
 
@@ -56,14 +53,6 @@ export function mountEditor({ parent, source, onRun, onEdit }) {
     get source() { return view.state.doc.toString(); },
     set source(doc) {
       view.dispatch({ changes: { from: 0, to: view.state.doc.length, insert: doc } });
-    },
-    setDiagnostics(items) {
-      const { doc } = view.state;
-      const diagnostics = items.filter(({ line }) => line >= 1 && line <= doc.lines).map(({ line, message }) => {
-        const { from, to } = doc.line(line);
-        return { from, to, message, severity: 'error' };
-      });
-      view.dispatch(setDiagnostics(view.state, diagnostics));
     },
     jumpToLine(line) {
       if (line < 1 || line > view.state.doc.lines) return;

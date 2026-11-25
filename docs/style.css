@@ -77,6 +77,13 @@ button[data-copy-label]::after { content: attr(data-copy-label); visibility: hid
 #editor .cm-content { padding-top: .7rem; }
 #editor .cm-line { padding-left: .6rem; }
 #editor .cm-gutters { background: var(--gutter); border-color: var(--line); color: var(--muted); }
+#editor .cm-lineNumbers .cm-gutterElement {
+  --line-number-padding: 10px;
+  padding-inline: var(--line-number-padding);
+  min-inline-size: calc(2ch + 2 * var(--line-number-padding));
+  /* Round up so fractional font metrics don't shift the gutter at 10 lines. */
+  min-inline-size: round(up, calc(2ch + 2 * var(--line-number-padding)), 1px);
+}
 /* CodeMirror paints selections underneath the line background. */
 #editor .cm-activeLine { background-color: var(--active-line-tint); }
 #editor .cm-activeLineGutter { background-color: var(--active-line); }

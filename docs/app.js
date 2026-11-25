@@ -13,16 +13,9 @@ const runButton = $('run');
 const output = $('output');
 const diagnosticsPanel = $('diagnostics');
 const copyOutputButton = $('copy-output');
-let revision = 0;
 let savePending = false;
 
-const editor = mountEditor({
-  parent: $('editor'), source: example, onRun: run,
-  onEdit() {
-    revision += 1;
-    if (!diagnosticsPanel.hidden) queueMicrotask(clearDiagnostics);
-  },
-});
+const editor = mountEditor({ parent: $('editor'), source: example, onRun: run });
 
 if (/mac|iphone|ipad/i.test(navigator.userAgentData?.platform ?? navigator.userAgent)) $('shortcut').textContent = '⌘';
 
@@ -32,14 +25,7 @@ function setNotice(message = '') {
   notice.hidden = !message;
 }
 
-function clearDiagnostics() {
-  editor.setDiagnostics([]);
-  diagnosticsPanel.replaceChildren();
-  diagnosticsPanel.hidden = true;
-}
-
-function showDiagnostics(items) {
-  editor.setDiagnostics(items);
+function renderDiagnostics(items) {
   diagnosticsPanel.replaceChildren(...items.map(({ line, message }) => {
     const button = document.createElement('button');
     button.type = 'button';
@@ -67,18 +53,17 @@ function appendOutput(lines) {
 function run() {
   if (runButton.disabled) return;
   const source = editor.source;
-  const runRevision = revision;
   const diagnostics = [];
   let lastError = '';
   setNotice();
-  clearDiagnostics();
+  renderDiagnostics([]);
   output.replaceChildren();
   runButton.disabled = true;
   copyOutputButton.disabled = true;
   launchSnippet(source, event => {
     if (event.type === 'output') {
       appendOutput(event.lines);
-      if (runRevision !== revision || diagnostics.length >= 30) return;
+      if (diagnostics.length >= 30) return;
       let changed = false;
       for (const { stream, text } of event.lines) {
         if (stream !== 'stderr') continue;
@@ -92,7 +77,7 @@ function run() {
           changed = true;
         }
       }
-      if (changed) showDiagnostics(diagnostics);
+      if (changed) renderDiagnostics(diagnostics);
       return;
     }
     runButton.disabled = false;
