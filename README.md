@@ -20,7 +20,7 @@ npm ci && npm run build:assets
 tools/vendor_godot.sh /path/to/godot
 ```
 
-This triggers a build of godot using the options in `min_web_build.py` and a custom suffix to avoid clobbering normal godot builds. The runner pck needs to be repacked with some Godot 4.8 binary if its source is modified:
+This triggers a build of godot using the options in `min_web_build.py` and a custom suffix to avoid clobbering normal godot builds. The runner pck needs to be repacked with a Godot 4.8 binary if its source is modified:
 
 ```sh
 godot --headless --script tools/pack_runner.gd -- runner docs/assets/runner.pck
@@ -28,4 +28,8 @@ godot --headless --script tools/pack_runner.gd -- runner docs/assets/runner.pck
 
 ## License
 
-The project is licensed under the [Apache License, Version 2.0](LICENSE). Vendored components retain their own licenses; see [third-party notices](THIRD_PARTY.md).
+The project is licensed under the [Apache License, Version 2.0](LICENSE). Vendored components retain their own licenses:
+
+- Godot Engine - [MIT License](docs/assets/godot.LICENSE.txt) and [third-party copyright notices](docs/assets/godot.COPYRIGHT.txt)
+- CodeMirror 6 and dependencies - [MIT Licenses and copyright notices](docs/assets/editor.LICENSES.txt).
+- fflate - [MIT License](docs/assets/deflate.LICENSES.txt).
