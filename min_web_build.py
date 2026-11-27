@@ -1,4 +1,4 @@
-target = "template_release"
+platform = "web"
 production = "yes"
 disable_2d = "yes"
 disable_3d = "yes"

@@ -1,10 +1,10 @@
 # GDScript Playground
 
-A static Godot 4.8 GDScript snippet runner. Runs entirely in-browser against a minimal godot web build without local or server-side storage. Shared snippets use DEFLATE with a small custom gdscript dictionary to produce compact links which entirely encode the shared script. Scripts are expected to inherit from some `Node` type and use `_ready` as the snippet entrypoint.
+A static Godot 4.8 GDScript shareable snippet runner. Runs entirely in-browser against a minimal godot web build without local or server-side storage. Shared snippets use DEFLATE with a small custom gdscript dictionary to produce compact links which entirely encode the shared script. Scripts are expected to inherit from some `Node` type and use `_ready` as the snippet entrypoint.
 
 One way to run locally:
 ```sh
-python3 -m http.server 8000 --bind 127.0.0.1 --directory docs
+python3 -m http.server --directory docs
 ```
 
 For GitHub Pages, publish the branch's `/docs` folder under Settings -> Pages.
@@ -28,7 +28,7 @@ godot --headless --script tools/pack_runner.gd -- runner docs/assets/runner.pck
 
 ## License
 
-The project is licensed under the [Apache License, Version 2.0](LICENSE). Vendored components retain their own licenses:
+The project is licensed under [Apache 2.0](LICENSE). Vendored components retain their own licenses:
 
 - Godot Engine - [MIT License](docs/assets/godot.LICENSE.txt) and [third-party copyright notices](docs/assets/godot.COPYRIGHT.txt)
 - CodeMirror 6 and dependencies - [MIT Licenses and copyright notices](docs/assets/editor.LICENSES.txt).

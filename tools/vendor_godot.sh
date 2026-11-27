@@ -19,8 +19,7 @@ done
 
 commit=$(git -C "$godot_src" rev-parse HEAD)
 stem=bin/godot.web.template_release.wasm32.nothreads.gdscript-only
-scons -C "$godot_src" "profile=$repo/min_web_build.py" target=template_release \
-    extra_suffix=gdscript-only "$stem.wrapped.js"
+scons -C "$godot_src" "profile=$repo/min_web_build.py" target=template_release extra_suffix=gdscript-only "$stem.wrapped.js"
 
 # SCons can leave an existing output untouched if it isn't a target of this build.
 if ! grep -aFq "$commit" "$godot_src/$stem.wasm"; then
